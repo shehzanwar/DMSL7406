@@ -96,7 +96,9 @@ df_lap_times['milliseconds'] = pd.to_numeric(df_lap_times['milliseconds'], error
 lap_stats = df_lap_times.groupby(['raceId', 'driverId'])['milliseconds'].agg(['mean', 'std']).reset_index()
 lap_stats = lap_stats.rename(columns={'mean': 'avg_lap_time_ms', 'std': 'std_lap_time_ms'})
 
-# Merging all relevant DataFrames
+# =========================================================================
+# Step 4: Merging DataFrames
+# =========================================================================
 print("Merging DataFrames...")
 master_f1 = pd.merge(df_results, df_races_short, on='raceId', how='left')
 master_f1 = pd.merge(master_f1, df_quali_short, on=['raceId', 'driverId', 'constructorId'], how='left')
@@ -147,7 +149,12 @@ print(desc_stats.to_markdown(floatfmt=".2f"))
 
 # Correlation Heatmap
 print("Generating correlation heatmap...")
-num_cols_for_corr = ['fastestLapTime_ms', 'positionOrder', 'grid', 'qualifying_position', 'avg_lap_time_ms', 'std_lap_time_ms', 'driver_age_at_race', 'year']
+num_cols_for_corr = [
+    'fastestLapTime_ms', 'positionOrder', 'podium', 'grid', 
+    'qualifying_position', 'q1_ms', 'q2_ms', 'q3_ms', 
+    'avg_lap_time_ms', 'std_lap_time_ms', 
+    'driver_age_at_race', 'year'
+]
 corr_matrix = final_df[num_cols_for_corr].corr()
 
 plt.figure(figsize=(12, 10))
@@ -159,6 +166,7 @@ plt.tight_layout()
 plt.savefig('f1_correlation_heatmap.png')
 
 print("\n'f1_correlation_heatmap.png' is saved.")
+
 
 # =========================================================================
 # Step 7: Pre-Modeling Data Preparation
