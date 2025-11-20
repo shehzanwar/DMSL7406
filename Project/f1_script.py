@@ -96,6 +96,7 @@ df_lap_times['milliseconds'] = pd.to_numeric(df_lap_times['milliseconds'], error
 lap_stats = df_lap_times.groupby(['raceId', 'driverId'])['milliseconds'].agg(['mean', 'std']).reset_index()
 lap_stats = lap_stats.rename(columns={'mean': 'avg_lap_time_ms', 'std': 'std_lap_time_ms'})
 
+
 # =========================================================================
 # Step 4: Merging DataFrames
 # =========================================================================
@@ -200,7 +201,3 @@ X_test_scaled = scaler.transform(X_test)
 print("Feature scaling complete. Data is ready for modeling.")
 print("\nSample of Scaled Training Data:")
 print(X_train_scaled[:5])
-
-
-
-
